@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="node_modules/font-awesome/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="app.css" />
+  <title>Emotion Quote</title>
+</head>
+<body>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12 col-lg-6 col-sm-12 col-xs-12">
+        <div class="container" id="camera_video"></div>
+      </div>
+
+      <div class="col-md-12 col-lg-6 col-sm-12 col-xs-12">
+        <div class="container text-center" id="camera_picture"></div>
+      </div>
+  </div>
+
+  <div class="container text-center">
+    <h1 id="interval_show">
+
+    </h1>
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+        <select id="selfie_interval" class="input-control">
+          <option value="1000">1s</option>
+          <option value="2000">2s</option>
+          <option value="3000">3s</option>
+          <option value="4000">4s</option>
+          <option value="5000">5s</option>
+        </select>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+        <button id="btn_snap" class="btn btn-primary"><i class="fas fa-camera"></i>TAKE A SELFIE</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="container text-center">
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <input type="file" class="btn btn-primary" value="PICK A PHOTO" />
+      </div>
+    </div>
+  </div>
+
+  <script src="node_modules/jquery/dist/jquery.min.js"></script>
+  <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="node_modules/webcamjs/webcam.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

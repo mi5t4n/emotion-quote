@@ -1,0 +1,26 @@
+{
+  "name": "emotion-quote",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mi5t4n/emotion-quote.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mi5t4n/emotion-quote/issues"
+  },
+  "homepage": "https://github.com/mi5t4n/emotion-quote#readme",
+  "dependencies": {
+    "bootstrap": "^4.2.1",
+    "font-awesome": "^4.7.0",
+    "jquery": "^3.3.1",
+    "webcamjs": "^1.0.25"
+  }
+}
