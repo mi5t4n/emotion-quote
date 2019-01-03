@@ -1,7 +1,7 @@
 {
   "name": "emotion-quote",
   "version": "1.0.0",
-  "description": "",
+  "description": "Emotion Detection Using AI",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -21,6 +21,7 @@
     "bootstrap": "^4.2.1",
     "font-awesome": "^4.7.0",
     "jquery": "^3.3.1",
+    "popper.js": "^1.14.6",
     "webcamjs": "^1.0.25"
   }
 }
