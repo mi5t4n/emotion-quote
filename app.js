@@ -28,8 +28,9 @@ function take_snapshot(){
 }
 
 function sendImage() {
+  // var subscriptionKey = "f343fcd01e184711a7fa7b188ed5759e";
   var subscriptionKey = "f343fcd01e184711a7fa7b188ed5759e";
-
+  
   var uriBase = "https://westcentralus.api.cognitive.microsoft.com/face/v1.0/detect";
 
   // Request parameters.
@@ -87,17 +88,49 @@ function sendImage() {
           },
         }).show();
 
+        // Get the face rectangle.
         x = data[0].faceRectangle.left;
         y = data[0].faceRectangle.top;
         width = data[0].faceRectangle.width;
         height = data[0].faceRectangle.height;
 
+        // Create a rectangle around face using the face rectangle
         var canvas = document.getElementById('camera_canvas');
         var context = canvas.getContext('2d');
         context.rect(x, y, width, height);
         context.lineWidth = "4";
         context.strokeStyle = "green";
         context.stroke();
+
+        // Get the emotion value.
+        // Convert the emotion object to array
+        var emotions = Object.entries(data[0].faceAttributes.emotion);
+        for ( const [emotionType, emotionValue] of emotions ) {
+          _emotionValue = Number(emotionValue * 100).toFixed(2);
+          jQuery("#emo-emotion-" + emotionType).html(_emotionValue + "%");
+        }
+
+        var gender = data[0].faceAttributes.gender;
+        jQuery("#emo-gender").html(gender);
+        var smile = data[0].faceAttributes.smile * 100;
+        smile = Number(smile).toFixed(2) + "%";
+        jQuery("#emo-smile").html(smile);
+        var age = data[0].faceAttributes.age;
+        jQuery("#emo-age").html(age);
+        try {
+          var accessories = data[0].faceAttributes.accessories;
+          var accessories_output = '';
+          accessories.forEach(function(elem, index, arr){
+            type = elem.type;
+            confidence = Number(elem.confidence * 100).toFixed(2);
+            accessories_output += type + '(' + confidence + '), '
+          });
+          jQuery('#emo-accessories').html(accessories_output);
+        } catch(err) {
+          jQuery('#emo-accessories').html('N/A');
+        }
+  
+        
       }
     }).fail(function(jqXHR, textStatus, errorThrown){
       //
