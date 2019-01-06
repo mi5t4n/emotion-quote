@@ -52,16 +52,36 @@
             <canvas id="camera_canvas" width="640" height="480"></canvas>
           </div>
           <ul class="list-group list-group-flush">
-            <li class="list-group-item">Sex: Male</li>
-            <li class="list-group-item">Age: 32</li>
-            <li class="list-group-item">Glasses: Yes</li>
+            <li class="list-group-item">
+              Gender: <span id="emo-gender">N/A</span>
+            </li>
+            <li class="list-group-item">
+              Age: <span id="emo-age">N/A</span>
+            </li>
+            <li class="list-group-item">
+              Accessories: <span id="emo-accessories">N/A</span>
+            </li>
+            <li class="list-group-item">
+              Smile: <span id="emo-smile">N/A</span>
+            </li>
+            <li class="list-group-item" id="emo-emotions">
+              Angry(😡) : <span id="emo-emotion-anger">N/A</span> | 
+              Contempt(😶) : <span id="emo-emotion-contempt">N/A</span> | 
+              Disgust(🤢) : <span id="emo-emotion-disgust">N/A</span> | 
+              Fear(😨) : <span id="emo-emotion-fear">N/A</span>
+            </li>
+            <li class="list-group-item" id="emo-emotions">
+              Happiness(😂) : <span id="emo-emotion-happiness">N/A</span> | 
+              Neutral(😑) : <span id="emo-emotion-neutral">N/A</span> | 
+              Sadness(😢) : <span id="emo-emotion-sadness">N/A</span> | 
+              Surprise(😲) : <span id="emo-emotion-surprise">N/A</span> 
+            </li>
           </ul>
         </div>
       </div>
 
       <div class="col-md-12 col-lg-4 col-sm-12 col-xs-12"></div>
   </div>
-  
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
   <script src="node_modules/jquery/dist/jquery.min.js"></script>
   <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
