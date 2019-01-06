@@ -63,7 +63,18 @@ function sendImage() {
     }).done(function(data){
       console.log(data);
       if (data.length == 0) {
-        jQuery('#emotion-modal').modal('toggle');
+        // jQuery('#emotion-modal').modal('toggle');
+        new Noty({
+          theme: 'metroui',
+          text: 'Unable to process the image. !!!',
+          type: 'warning',
+          layout: 'topCenter',
+          timeout: 2000,
+          animation: {
+            open: 'animated bounceInRight', // Animate.css class names
+            close: 'animated bounceOutRight' // Animate.css class names
+          },
+        }).show();
       } else {
         x = data[0].faceRectangle.left;
         y = data[0].faceRectangle.top;

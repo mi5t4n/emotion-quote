@@ -18,9 +18,11 @@
   },
   "homepage": "https://github.com/mi5t4n/emotion-quote#readme",
   "dependencies": {
+    "animate.css": "^3.7.0",
     "bootstrap": "^4.2.1",
     "font-awesome": "^4.7.0",
     "jquery": "^3.3.1",
+    "noty": "^3.2.0-beta",
     "popper.js": "^1.14.6",
     "webcamjs": "^1.0.25"
   }
