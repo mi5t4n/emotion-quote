@@ -63,7 +63,6 @@ function sendImage() {
     }).done(function(data){
       console.log(data);
       if (data.length == 0) {
-        // jQuery('#emotion-modal').modal('toggle');
         new Noty({
           theme: 'metroui',
           text: 'Unable to process the image. !!!',
@@ -76,6 +75,18 @@ function sendImage() {
           },
         }).show();
       } else {
+        new Noty({
+          theme: 'metroui',
+          text: 'Image is successfully processed. ',
+          type: 'success',
+          layout: 'topCenter',
+          timeout: 1000,
+          animation: {
+            open: 'animated bounceInRight', // Animate.css class names
+            close: 'animated bounceOutRight' // Animate.css class names
+          },
+        }).show();
+
         x = data[0].faceRectangle.left;
         y = data[0].faceRectangle.top;
         width = data[0].faceRectangle.width;
