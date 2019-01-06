@@ -1,3 +1,8 @@
+@font-face {
+  font-family: 'font-awesome';
+  src: url('node_modules/font-awesome/fonts/fontawesome-webfont.woff2');
+}
+
 html body {
   height: 100%;
   width: 100%;
