@@ -1,8 +1,3 @@
-@font-face {
-  font-family: 'font-awesome';
-  src: url('node_modules/font-awesome/fonts/fontawesome-webfont.woff2');
-}
-
 html body {
   height: 100%;
   width: 100%;
@@ -14,14 +9,22 @@ html body {
   margin-top: 10px;
 }
 
-/* #camera_video {
-  margin-top: 10px;
-  width: 320px;
-  height: 240px;
-} */
-
 #camera_video {
   margin-top: 10px;
   width: 640px;
   height: 480px;
+}
+
+.centered {
+  position: absolute;
+  color: white;
+  font-size: 10rem;
+  font-weight: bold;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+#emo-gender, #emo-accessories{
+  text-transform: capitalize;
 }
