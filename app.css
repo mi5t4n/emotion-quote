@@ -28,3 +28,7 @@ html body {
 #emo-gender, #emo-accessories{
   text-transform: capitalize;
 }
+
+#temp_canvas {
+  display: none;
+}

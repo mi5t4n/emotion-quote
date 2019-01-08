@@ -1,6 +1,5 @@
 var seconds = 0;
 var intervalId;
-var fileUpload = false;
 var size = { width: 0, height: 0};
 
 jQuery(document).ready(function(e){
@@ -9,6 +8,10 @@ jQuery(document).ready(function(e){
 
   // Set the initial values for the Webcam.
   Webcam.set({
+    width: 640,
+    height: 480,
+    dest_width: 1280,
+    dest_height: 720,
     image_format: 'jpeg',
     jpeg_quality: 100,
     force_flash: false
@@ -42,11 +45,21 @@ jQuery("#btn_snap").click(function(e){
 function take_snapshot(){
 
   Webcam.snap(function(data_uri){
-    jQuery("#camera_picture").html( '<img src="' + data_uri + '"/>' );
+    // Load the canvas of 640x480 with data_uri
     loadCanvasWithDataURI(data_uri);
 
+    // Load the temporary canvas of 1280x720 with data_uri 
+    var canvas = document.getElementById("temp_canvas");
+    var context = canvas.getContext('2d');
+    var imageObj = new Image();
+    imageObj.onload = function(){
+      context.drawImage(this, 0, 0);
+    }
+    imageObj.src = data_uri;
+
+    
+
     // Get the image blob.
-    var canvas = document.getElementById('camera_canvas');
     canvas.toBlob(function(image_blob){
       sendImage(image_blob);
     }, 'image/jpeg', 1.0);
@@ -118,17 +131,14 @@ function sendImage(image_blob) {
       x = data[0].faceRectangle.left;
       y = data[0].faceRectangle.top;
       width = data[0].faceRectangle.width;
-      height = data[0].faceRectangle.height;
+      height = data[0].faceRectangle.height;      
 
-      // If the file upload method is selected, translate the values.
-      if (fileUpload) {
-        scalingFactorX = 640.0/size.width;
-        scalingFactorY = 480.0/size.height;
-        x = parseInt(x * scalingFactorX);
-        y = parseInt( y * scalingFactorY);
-        width = parseInt(width * scalingFactorX);
-        height = parseInt(height * scalingFactorY);
-      }
+      scalingFactorX = 640.0/size.width;
+      scalingFactorY = 480.0/size.height;
+      x = parseInt(x * scalingFactorX);
+      y = parseInt( y * scalingFactorY);
+      width = parseInt(width * scalingFactorX);
+      height = parseInt(height * scalingFactorY);
 
       // Create a rectangle around face using the face rectangle
       var canvas = document.getElementById('camera_canvas');
@@ -212,9 +222,6 @@ function loadCanvasWithDataURI(dataURI) {
 
 function readFile(event){
   if (window.File && window.FileReader && window.FileList && window.Blob) {
-    // File upload method is selected.
-    fileUpload = true;
-
     // Get the first file.
     var file = event.target.files[0];
 
