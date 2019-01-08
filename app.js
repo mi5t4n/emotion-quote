@@ -200,7 +200,8 @@ function loadCanvasWithDataURI(dataURI) {
   var context = canvas.getContext('2d');
   
   // Clear the canvas
-  context.clearRect(0, 0, canvas.width, canvas.height);
+  // context.clearRect(0, 0, canvas.width, canvas.height);
+  canvas.width = canvas.width;
 
   // Clear the previous face attributes values
   jQuery("#emo-gender").html("N/A");
