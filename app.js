@@ -68,6 +68,9 @@ function take_snapshot(){
 }
 
 function sendImage(image_blob) {
+  // Load the loading bar
+  jQuery("#loading-bar").css('visibility', 'visible');
+
   // var subscriptionKey = "f343fcd01e184711a7fa7b188ed5759e";
   var subscriptionKey = "f343fcd01e184711a7fa7b188ed5759e";
   
@@ -91,7 +94,7 @@ function sendImage(image_blob) {
     contentType: 'application/octet-stream',
 
     // Request headers.
-    beforeSend: function(xhrObj){      
+    beforeSend: function(xhrObj){
       xhrObj.setRequestHeader("Ocp-Apim-Subscription-Key", subscriptionKey);
     },
 
@@ -100,6 +103,10 @@ function sendImage(image_blob) {
 
   }).done(function(data){
     console.log(data);
+
+    // Hide the loading bar
+    jQuery("#loading-bar").css('visibility', 'hidden');
+
     if (data.length == 0) {
       // Warning: Unable to process the image.
       new Noty({
