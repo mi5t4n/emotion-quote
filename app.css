@@ -25,10 +25,6 @@ html body {
   transform: translate(-50%, -50%);
 }
 
-#emo-gender, #emo-accessories{
-  text-transform: capitalize;
-}
-
 #temp_canvas {
   display: none;
 }
@@ -48,6 +44,7 @@ html body {
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
 /* Facebook Animation */
 .lds-facebook {
   display: inline-block;

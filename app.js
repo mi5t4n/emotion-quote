@@ -52,17 +52,15 @@ function take_snapshot(){
     var canvas = document.getElementById("temp_canvas");
     var context = canvas.getContext('2d');
     var imageObj = new Image();
-    imageObj.onload = function(){
+    imageObj.onload = function() {
       context.drawImage(this, 0, 0);
+
+       // Get the image blob.
+      canvas.toBlob(function(image_blob){
+        sendImage(image_blob);
+      }, 'image/jpeg', 1.0);
     }
     imageObj.src = data_uri;
-
-    
-
-    // Get the image blob.
-    canvas.toBlob(function(image_blob){
-      sendImage(image_blob);
-    }, 'image/jpeg', 1.0);
   });
 
 }
@@ -71,8 +69,7 @@ function sendImage(image_blob) {
   // Load the loading bar
   jQuery("#loading-bar").css('visibility', 'visible');
 
-  // var subscriptionKey = "f343fcd01e184711a7fa7b188ed5759e";
-  var subscriptionKey = "f343fcd01e184711a7fa7b188ed5759e";
+  var subscriptionKey = "40a3892f4415413ea7e7a1526177fec5";
   
   var uriBase = "https://westcentralus.api.cognitive.microsoft.com/face/v1.0/detect";
 
@@ -101,13 +98,16 @@ function sendImage(image_blob) {
     // Request body.
     data: image_blob
 
-  }).done(function(data){
-    console.log(data);
+  }).done(function(faces){
+    console.log(faces);
 
     // Hide the loading bar
     jQuery("#loading-bar").css('visibility', 'hidden');
 
-    if (data.length == 0) {
+    // Numer of faces detected.
+    var numer_of_faces = faces.length;
+
+    if (numer_of_faces == 0) {
       // Warning: Unable to process the image.
       new Noty({
         theme: 'metroui',
@@ -134,55 +134,15 @@ function sendImage(image_blob) {
         },
       }).show();
 
-      // Get the face rectangle.
-      x = data[0].faceRectangle.left;
-      y = data[0].faceRectangle.top;
-      width = data[0].faceRectangle.width;
-      height = data[0].faceRectangle.height;      
+      // Clear the tab
+      jQuery("#face-tab").html('');
+      // Clear the tab content.
+      jQuery("#face-tab-content").html('');
 
-      scalingFactorX = 640.0/size.width;
-      scalingFactorY = 480.0/size.height;
-      x = parseInt(x * scalingFactorX);
-      y = parseInt( y * scalingFactorY);
-      width = parseInt(width * scalingFactorX);
-      height = parseInt(height * scalingFactorY);
-
-      // Create a rectangle around face using the face rectangle
-      var canvas = document.getElementById('camera_canvas');
-      var context = canvas.getContext('2d');
-      context.rect(x, y, width, height);
-      context.lineWidth = "4";
-      context.strokeStyle = "green";
-      context.stroke();
-
-      // Get the emotion value.
-      // Convert the emotion object to array
-      var emotions = Object.entries(data[0].faceAttributes.emotion);
-      for ( const [emotionType, emotionValue] of emotions ) {
-        _emotionValue = Number(emotionValue * 100).toFixed(2);
-        jQuery("#emo-emotion-" + emotionType).html(_emotionValue + "%");
-      }
-
-      var gender = data[0].faceAttributes.gender;
-      jQuery("#emo-gender").html(gender);
-      var smile = data[0].faceAttributes.smile * 100;
-      smile = Number(smile).toFixed(2) + "%";
-      jQuery("#emo-smile").html(smile);
-      var age = data[0].faceAttributes.age;
-      jQuery("#emo-age").html(age);
-      try {
-        var accessories = data[0].faceAttributes.accessories;
-        var accessories_output = '';
-        accessories.forEach(function(elem, index, arr){
-          type = elem.type;
-          confidence = Number(elem.confidence * 100).toFixed(2);
-          accessories_output += type + '(' + confidence + '%), '
-        });
-        accessories_output = accessories_output.slice(0, -2);
-        jQuery('#emo-accessories').html(accessories_output);
-      } catch(err) {
-        jQuery('#emo-accessories').html('N/A');
-      }
+      for(index = 0; index < numer_of_faces; index++) {
+        drawRectangleAroundFace(faces[index], index);
+        addFaceAttributes(faces[index], index);        
+      }            
     }
   }).fail(function(jqXHR, textStatus, errorThrown){
     new Noty({
@@ -196,6 +156,7 @@ function sendImage(image_blob) {
         close: 'animated bounceOutRight' // Animate.css class names
       },
     }).show();
+    jQuery("#loading-bar").css('visibility', 'hidden');
   });
   
 }
@@ -207,7 +168,6 @@ function loadCanvasWithDataURI(dataURI) {
   var context = canvas.getContext('2d');
   
   // Clear the canvas
-  // context.clearRect(0, 0, canvas.width, canvas.height);
   canvas.width = canvas.width;
 
   // Clear the previous face attributes values
@@ -223,7 +183,6 @@ function loadCanvasWithDataURI(dataURI) {
     size.width = imageObj.width;
     context.drawImage(this, 0, 0, 640, 480);
   };
-
   imageObj.src = dataURI;
 
 }
@@ -265,4 +224,118 @@ function readFile(event){
       },
     }).show();
   }
+}
+
+function drawRectangleAroundFace(face, index){
+  // Get the face rectangle.
+  x = face.faceRectangle.left;
+  y = face.faceRectangle.top;
+  width = face.faceRectangle.width;
+  height = face.faceRectangle.height;      
+
+  // Scaling down the face coordinates to the size of the canvas.
+  scalingFactorX = 640.0/size.width;
+  scalingFactorY = 480.0/size.height;
+  x = parseInt(x * scalingFactorX);
+  y = parseInt( y * scalingFactorY);
+  width = parseInt(width * scalingFactorX);
+  height = parseInt(height * scalingFactorY);
+
+  // Create a small rectagle to place the number.
+  nX = x;
+  nY = y;
+  nWidth = 30;
+  nHeight = 30;
+
+  // Get the canvas.
+  var canvas = document.getElementById('camera_canvas');
+  var context = canvas.getContext('2d');
+
+  // Draw rectangle around face.
+  context.rect(x, y, width, height);
+  context.lineWidth = "4";
+  context.strokeStyle = "green";
+  context.stroke();
+
+  // Draw rectangle to store number.
+  context.rect(nX, nY, nWidth, nHeight);
+  context.lineWidth = "4";
+  context.strokeStyle = "green";
+  context.stroke();
+
+  // Draw number to the number rectangle
+  context.font = "bold 24px Arial";
+  context.fillStyle = 'yellow';
+  context.fillText(index, nX + nWidth*.25, nY + nHeight*0.75);
+}
+
+function addFaceAttributes(face, index) {
+
+  // Get the smile, gender and age.
+  var age = face.faceAttributes.age;
+  var gender = face.faceAttributes.gender;
+  var smile = face.faceAttributes.smile;
+  smile = Number(smile * 100).toFixed(2);
+
+  // Convert the emotion object to array
+  var emotions = Object.entries(face.faceAttributes.emotion);
+  var emotions_arr = []
+  for ( const [emotionType, emotionValue] of emotions ) {
+    _emotionValue = Number(emotionValue * 100).toFixed(2);
+    emotions_arr[emotionType] = _emotionValue;
+  }
+
+  // Get the accessories.
+  try {
+    var accessories = face.faceAttributes.accessories;
+    var accessories_output = '';
+    accessories.forEach(function(elem, index, arr){
+      type = elem.type;
+      confidence = Number(elem.confidence * 100).toFixed(2);
+      accessories_output += type + '(' + confidence + '%), '
+    });
+    accessories_output = accessories_output.slice(0, -2);
+  } catch(err) {
+    accessories_output = 'N/A';
+  }
+
+  // Construct the tab
+  output = '<li class="nav-item">';
+  output += '<a class="nav-link'+ ( (index == 0) ? ' active': '' ) + '" id="face' + index +'-tab" data-toggle="tab" href="#face' + index + '" role="tab" aria-controls="face' + index + '" aria-selected="true">Face ' + index +'</a>';
+  output += '</li>';
+
+  // Append the tab
+  jQuery("#face-tab").append(output);
+
+  // Construct the tab content.
+  output = '<div class="tab-pane fade show' + ( (index == 0) ? ' active': '' ) + '" id="face' + index +'" role="tabpanel" aria-labelledby="face' + index +'-tab">';
+  output += '<ul class="list-group list-group-flush">';
+  output += '<li class="list-group-item">';
+  output += 'Gender: ' + capitalize(gender);
+  output += '</li>';
+  output += '<li class="list-group-item">';
+  output += 'Age : ' + age;
+  output += '</li>';
+  output += '<li class="list-group-item">';
+  output += 'Accessories : ' + capitalize(accessories_output);
+  output += '</li>';
+  output += '<li class="list-group-item">';
+  output += 'Smile : ' + smile + '%';
+  output += '</li>';
+  output += '<li class="list-group-item">';
+  output += 'Angry(😡) : ' + emotions_arr['anger'] + '| Contempt(😶) : ' + emotions_arr['contempt'] +' | Disgust(🤢) : ' + emotions_arr['disgust'] +' | Fear(😨) : ' + emotions_arr['fear'];
+  output += '</li>';
+  output += '<li class="list-group-item">';
+  output += 'Happiness(😂) : ' + emotions_arr['happiness'] + '| Neutral(😑) : ' + emotions_arr['neutral'] +' | Sadness(😢) : ' + emotions_arr['sadness'] +' | Surprise(😲) : ' + emotions_arr['surprise'];
+  output += '</li>';
+  output += '</div>';
+
+  // Add the face tab content.
+  jQuery("#face-tab-content").append(output);
+
+}
+
+function capitalize(s){
+  if (typeof s !== 'string') return ''
+  return s.charAt(0).toUpperCase() + s.slice(1);
 }
