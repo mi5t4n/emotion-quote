@@ -142,7 +142,6 @@ function sendImage(image_blob) {
       jQuery("#face-tab-content").html('');
 
       for(index = 0; index < numer_of_faces; index++) {
-        generateEmoticonQuotes(faces[index], index);
         drawRectangleAroundFace(faces[index], index);
         addFaceAttributes(faces[index], index);        
       }            
@@ -236,7 +235,7 @@ function generateEmoticonQuotes(face){
   _emotionValueMax = 0;
   _emotionType = '';
   for ( const [emotionType, emotionValue] of emotions ) {
-    _emotionValue = Number(emotionValue * 100).toFixed(2);
+    _emotionValue = parseFloat(Number(emotionValue * 100).toFixed(2));
     if (_emotionValue > _emotionValueMax) {
       _emotionValueMax = _emotionValue;
       _emotionType = emotionType;
@@ -245,7 +244,8 @@ function generateEmoticonQuotes(face){
 
   // Generate random number
   var quote_image_index = parseInt(Math.random() * NUM_OF_IMAGES) + 1;
-  emoImageSrc = "images/" + "anger" + "/" + quote_image_index + ".gif";
+  emoImageSrc = "images/" + _emotionType + "/" + quote_image_index + ".gif";
+  console.log({emoImageSrc: emoImageSrc});
   return emoImageSrc;
 }
 
