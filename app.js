@@ -117,7 +117,7 @@ function sendImage(image_blob) {
       // Warning: Unable to process the image.
       new Noty({
         theme: 'metroui',
-        text: 'Unable to process the image. !!!',
+        text: 'Human face not detected !!!',
         type: 'warning',
         layout: 'topCenter',
         timeout: 1000,
