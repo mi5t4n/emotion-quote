@@ -1,16 +1,12 @@
 var seconds = 0;
 var intervalId;
 var size = { width: 0, height: 0};
+const NUM_OF_IMAGES = 9;
 
 jQuery(document).ready(function(e){
 
   // Attach an event listener when the file upload changes.
   document.getElementById('image_upload').addEventListener('change', readFile, false);
-
-  // Attach an event listener when the tab changes.
-  $('#face-tab').on('show.bs.tab', function(e){
-    console.log(e.target);
-  });
 
   // Set the initial values for the Webcam.
   Webcam.set({
@@ -146,6 +142,7 @@ function sendImage(image_blob) {
       jQuery("#face-tab-content").html('');
 
       for(index = 0; index < numer_of_faces; index++) {
+        generateEmoticonQuotes(faces[index], index);
         drawRectangleAroundFace(faces[index], index);
         addFaceAttributes(faces[index], index);        
       }            
@@ -232,7 +229,28 @@ function readFile(event){
   }
 }
 
+function generateEmoticonQuotes(face){
+  var emotions = Object.entries(face.faceAttributes.emotion);
+  
+  // Find the emotion with max value.
+  _emotionValueMax = 0;
+  _emotionType = '';
+  for ( const [emotionType, emotionValue] of emotions ) {
+    _emotionValue = Number(emotionValue * 100).toFixed(2);
+    if (_emotionValue > _emotionValueMax) {
+      _emotionValueMax = _emotionValue;
+      _emotionType = emotionType;
+    }
+  }
+
+  // Generate random number
+  var quote_image_index = parseInt(Math.random() * NUM_OF_IMAGES) + 1;
+  emoImageSrc = "images/" + "anger" + "/" + quote_image_index + ".gif";
+  return emoImageSrc;
+}
+
 function drawRectangleAroundFace(face, index){
+
   // Get the face rectangle.
   x = face.faceRectangle.left;
   y = face.faceRectangle.top;
@@ -306,15 +324,18 @@ function addFaceAttributes(face, index) {
   }
 
   // Construct the tab
-  output = '<li class="nav-item">';
-  output += '<a class="nav-link'+ ( (index == 0) ? ' active': '' ) + '" id="face' + index +'-tab" data-toggle="tab" href="#face' + index + '" role="tab" aria-controls="face' + index + '" aria-selected="true">Face ' + index +'</a>';
-  output += '</li>';
+  // output = '<li class="nav-item">';
+  output = '<a class="nav-link'+ ( (index == 0) ? ' active': '' ) + '" id="face' + index +'-tab" data-toggle="pill" href="#face' + index + '" role="tab" aria-controls="face' + index + '" aria-selected="true">Face ' + index +'</a>';
+  // output += '</li>';
 
   // Append the tab
   jQuery("#face-tab").append(output);
 
-  // Construct the tab content.
+  // Construct the tab conte;nt.
   output = '<div class="tab-pane fade show' + ( (index == 0) ? ' active': '' ) + '" id="face' + index +'" role="tabpanel" aria-labelledby="face' + index +'-tab">';
+  output += '<div class="container-fluid">';
+  output += '<div class="row">';
+  output += '<div class="col-lg-8">';
   output += '<ul class="list-group list-group-flush">';
   output += '<li class="list-group-item">';
   output += 'Gender: ' + capitalize(gender);
@@ -334,6 +355,13 @@ function addFaceAttributes(face, index) {
   output += '<li class="list-group-item">';
   output += 'Happiness(😂) : ' + emotions_arr['happiness'] + '% | Neutral(😑) : ' + emotions_arr['neutral'] +'% | Sadness(😢) : ' + emotions_arr['sadness'] +'% | Surprise(😲) : ' + emotions_arr['surprise'] + '%';
   output += '</li>';
+  output += '</ul>';
+  output += '</div>'
+  output += '<div class="col-lg-4">';
+  output += '<img src="' + generateEmoticonQuotes(face) + '" class="img-fluid">';
+  output += '</div>';
+  output += '</div>';
+  output += '</div>';
   output += '</div>';
 
   // Add the face tab content.
