@@ -4,7 +4,13 @@ var size = { width: 0, height: 0};
 
 jQuery(document).ready(function(e){
 
+  // Attach an event listener when the file upload changes.
   document.getElementById('image_upload').addEventListener('change', readFile, false);
+
+  // Attach an event listener when the tab changes.
+  $('#face-tab').on('show.bs.tab', function(e){
+    console.log(e.target);
+  });
 
   // Set the initial values for the Webcam.
   Webcam.set({
@@ -323,10 +329,10 @@ function addFaceAttributes(face, index) {
   output += 'Smile : ' + smile + '%';
   output += '</li>';
   output += '<li class="list-group-item">';
-  output += 'Angry(😡) : ' + emotions_arr['anger'] + '| Contempt(😶) : ' + emotions_arr['contempt'] +' | Disgust(🤢) : ' + emotions_arr['disgust'] +' | Fear(😨) : ' + emotions_arr['fear'];
+  output += 'Angry(😡) : ' + emotions_arr['anger'] + '% | Contempt(😶) : ' + emotions_arr['contempt'] +'% | Disgust(🤢) : ' + emotions_arr['disgust'] +'% | Fear(😨) : ' + emotions_arr['fear'] + '%';
   output += '</li>';
   output += '<li class="list-group-item">';
-  output += 'Happiness(😂) : ' + emotions_arr['happiness'] + '| Neutral(😑) : ' + emotions_arr['neutral'] +' | Sadness(😢) : ' + emotions_arr['sadness'] +' | Surprise(😲) : ' + emotions_arr['surprise'];
+  output += 'Happiness(😂) : ' + emotions_arr['happiness'] + '% | Neutral(😑) : ' + emotions_arr['neutral'] +'% | Sadness(😢) : ' + emotions_arr['sadness'] +'% | Surprise(😲) : ' + emotions_arr['surprise'] + '%';
   output += '</li>';
   output += '</div>';
 
