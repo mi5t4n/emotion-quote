@@ -3,7 +3,7 @@
 Emotion-quote is a web application which detects the facial expression in pictures.
 
 > ## Features
-* Image can taken from webcan.
+* Image can taken from webcam.
 * Image can uploaded.
 * Detect other features like smile, accessories and age.
 
