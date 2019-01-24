@@ -71,7 +71,7 @@ function sendImage(image_blob) {
   // Load the loading bar
   jQuery("#loading-bar").css('visibility', 'visible');
 
-  var subscriptionKey = "31a9aa5823fd4371b59f628d904f85bd";
+  var subscriptionKey = "968c591522ca4c639e0a8832a05f40bc";
   
   var uriBase = "https://westcentralus.api.cognitive.microsoft.com/face/v1.0/detect";
 
@@ -149,7 +149,7 @@ function sendImage(image_blob) {
   }).fail(function(jqXHR, textStatus, errorThrown){
     new Noty({
       theme: 'metroui',
-      text: 'Error occcurred !!!',
+      text: 'Error occcurred !!!. Microsoft Face API key may have been expired.',
       type: 'warning',
       layout: 'topCenter',
       timeout: 1000,
