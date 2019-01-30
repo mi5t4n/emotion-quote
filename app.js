@@ -71,7 +71,11 @@ function sendImage(image_blob) {
   // Load the loading bar
   jQuery("#loading-bar").css('visibility', 'visible');
 
+<<<<<<< HEAD
   var subscriptionKey = "968c591522ca4c639e0a8832a05f40bc";
+=======
+  var subscriptionKey = "55a7fc46ac3a41c08a3fce9116879486";
+>>>>>>> development
   
   var uriBase = "https://westcentralus.api.cognitive.microsoft.com/face/v1.0/detect";
 
